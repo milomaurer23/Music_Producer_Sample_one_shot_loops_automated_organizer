@@ -8,26 +8,20 @@ Producers lose an average of 20–40 minutes per session digging through unorgan
 
 ---
 
-## Works With
-
-| Tool | How it works | Best for |
-|------|-------------|----------|
-| **Claude Cowork** | Claude accesses your folders directly and runs the whole workflow for you — no terminal needed | Most producers. Just describe what you want. |
-| **Claude Code (CLI)** | Run slash commands like `/organize-samples` from your terminal or IDE | Producers who are comfortable in the terminal |
-| **Claude Desktop App** | Upload the skill file and use it through chat | Lighter guided experience; Claude walks you through it |
-
----
-
 ## How to Get It Running
 
-### Claude Cowork (easiest)
-1. Open Claude Cowork from the Claude desktop app (paid plan required)
-2. Grant it access to your samples folder
-3. Paste the contents of [`organize-samples.md`](.claude/commands/organize-samples.md) into the chat, or say:
-   > *"Follow these instructions to organize my samples: [paste file contents]"*
-4. Tell it your samples folder path and let it run
+### Recommended — Claude Cowork (no terminal needed)
+The easiest way. Claude Cowork is built into the Claude desktop app and can access your files directly — no command line, no setup beyond granting folder access.
 
-### Claude Code CLI
+1. Open the Claude desktop app and switch to **Cowork** (paid plan required)
+2. Grant it access to your samples folder when prompted
+3. Paste the contents of [`organize-samples.md`](.claude/commands/organize-samples.md) into the chat, or just say:
+   > *"I want to organize my sample library. Here are the instructions to follow: [paste file contents]"*
+4. Tell it your samples folder path — it handles the rest
+
+### Advanced — Claude Code CLI
+For producers comfortable in the terminal. Gives you full slash command control.
+
 1. Install [Claude Code](https://claude.ai/code)
 2. Copy the command file into your project:
 ```bash
@@ -35,14 +29,23 @@ mkdir -p .claude/commands
 curl -o .claude/commands/organize-samples.md \
   https://raw.githubusercontent.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer/main/.claude/commands/organize-samples.md
 ```
-3. Open Claude Code in that folder
-4. Run any command below
+3. Open Claude Code in that folder and run any command below
 
-### Claude Desktop App
+### Also works — Claude Desktop App (guided experience)
 1. Open the Claude desktop app
 2. Go to **Skills → Create Skill → Upload a skill**
 3. Upload the [`organize-samples.md`](.claude/commands/organize-samples.md) file from this repo
-4. The skill will appear in your skill list — click it and follow the prompts
+4. Click the skill and follow the prompts
+
+---
+
+## Works With
+
+| Tool | Terminal needed | File access | Best for |
+|------|----------------|-------------|----------|
+| **Claude Cowork** ⭐ | No | Direct | Most producers |
+| **Claude Code CLI** | Yes | Direct | Power users |
+| **Claude Desktop App** | No | Guided only | Quick exploration |
 
 ---
 
