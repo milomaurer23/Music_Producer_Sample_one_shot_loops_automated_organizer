@@ -86,7 +86,7 @@ curl -o .claude/commands/organize-samples.md \
 - **A library built around you** — genre-first, instrument-first, or fully custom based on how you answered the setup questions
 - **Your go-to sounds one click away** — `!Favorites` sits at the top of every DAW browser
 - **Storage back** — confirmed duplicates staged and ready to delete, with an exact GB count before you decide
-- **Time back** — estimated minutes saved per session based on files organized and folder depth reduced
+- **Hours back** — producers lose 20–40 minutes every session digging for sounds; organized once, you get that time back every time you sit down to make music
 - **Nothing lost** — every file is copied before originals are touched, with a backup manifest saved before anything moves
 
 ---
