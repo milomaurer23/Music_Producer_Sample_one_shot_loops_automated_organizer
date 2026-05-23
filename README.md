@@ -1,10 +1,48 @@
 # sample-library-organizer
 
-**A Claude Code skill that organizes your messy sample library — and tells you exactly how much time and storage space you got back.**
+**A Claude skill that organizes your messy sample library — and tells you exactly how much time and storage space you got back.**
 
 ---
 
 Producers lose an average of 20–40 minutes per session digging through unorganized samples. That's hours every week not spent making music. This skill fixes your library once, so every session after is faster.
+
+---
+
+## Works With
+
+| Tool | How it works | Best for |
+|------|-------------|----------|
+| **Claude Cowork** | Claude accesses your folders directly and runs the whole workflow for you — no terminal needed | Most producers. Just describe what you want. |
+| **Claude Code (CLI)** | Run slash commands like `/organize-samples` from your terminal or IDE | Producers who are comfortable in the terminal |
+| **Claude Desktop App** | Upload the skill file and use it through chat | Lighter guided experience; Claude walks you through it |
+
+---
+
+## How to Get It Running
+
+### Claude Cowork (easiest)
+1. Open Claude Cowork from the Claude desktop app (paid plan required)
+2. Grant it access to your samples folder
+3. Paste the contents of [`organize-samples.md`](.claude/commands/organize-samples.md) into the chat, or say:
+   > *"Follow these instructions to organize my samples: [paste file contents]"*
+4. Tell it your samples folder path and let it run
+
+### Claude Code CLI
+1. Install [Claude Code](https://claude.ai/code)
+2. Copy the command file into your project:
+```bash
+mkdir -p .claude/commands
+curl -o .claude/commands/organize-samples.md \
+  https://raw.githubusercontent.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer/main/.claude/commands/organize-samples.md
+```
+3. Open Claude Code in that folder
+4. Run any command below
+
+### Claude Desktop App
+1. Open the Claude desktop app
+2. Go to **Skills → Create Skill → Upload a skill**
+3. Upload the [`organize-samples.md`](.claude/commands/organize-samples.md) file from this repo
+4. The skill will appear in your skill list — click it and follow the prompts
 
 ---
 
@@ -17,17 +55,19 @@ Producers lose an average of 20–40 minutes per session digging through unorgan
 /organize-samples /path/to/folder      Quick mode: smart defaults, shows a plan, asks before
                                        doing anything. Good for a full library you want sorted fast.
 
-/organize-samples --new /path          New downloads mode: drops a fresh batch of samples into
-                                       your existing organized library without touching anything else.
+/organize-samples --new /path          New downloads mode: drops a fresh Splice batch into your
+                                       existing organized library without touching anything else.
 
 /organize-samples --favorites          Favorites mode: creates a !Favorites folder pinned to the
-                                       top of your library. You tell Claude your go-to sounds —
+                                       top of your library. Tell Claude your go-to sounds —
                                        it copies them there so they're always one click away.
 
 /organize-samples --duplicates /path   Duplicate scan: finds Splice re-downloads and exact
-                                       duplicates, shows you how much storage you'd free up,
+                                       duplicates, shows how much storage you'd free up,
                                        and stages them for deletion on your approval.
 ```
+
+*Note: slash commands work in Claude Code CLI. In Cowork or the desktop app, just describe what you want in plain English — same result.*
 
 ---
 
@@ -74,31 +114,6 @@ samples/Organized-Samples/
 ⚠️  14 files need your review → Island_of_Misfit_Toys/
 🔒  3 complete packs preserved intact → _PROTECTED_PACKS/
 ```
-
----
-
-## Requirements
-
-- [Claude Code](https://claude.ai/code) installed
-
----
-
-## Installation
-
-**Option A — Clone and copy:**
-```bash
-git clone https://github.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer.git
-cp -r music_producer_sample_one_shot_loops_automated_organizer/.claude /path/to/your/project/
-```
-
-**Option B — Just grab the command file:**
-```bash
-mkdir -p .claude/commands
-curl -o .claude/commands/organize-samples.md \
-  https://raw.githubusercontent.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer/main/.claude/commands/organize-samples.md
-```
-
-Open Claude Code in your project folder and run any command above.
 
 ---
 
