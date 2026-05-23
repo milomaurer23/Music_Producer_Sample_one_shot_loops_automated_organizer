@@ -1,4 +1,4 @@
-# sample-library-organizer
+# music-sample-library-organizer
 
 **A Claude skill that organizes your messy sample library — and tells you exactly how much time and storage space you got back.**
 
@@ -35,7 +35,7 @@ For producers comfortable in the terminal. Gives you full slash command control.
 ```bash
 mkdir -p .claude/commands
 curl -o .claude/commands/organize-samples.md \
-  https://raw.githubusercontent.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer/main/.claude/commands/organize-samples.md
+  https://raw.githubusercontent.com/milomaurer23/music-sample-library-organizer/main/.claude/commands/organize-samples.md
 ```
 3. Open Claude Code in that folder and run any command below
 
