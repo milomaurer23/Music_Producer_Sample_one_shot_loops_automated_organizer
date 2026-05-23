@@ -1,10 +1,27 @@
 # music-sample-library-organizer
 
-**A Claude skill that organizes your messy sample library — and tells you exactly how much time and storage space you got back.**
+**A Claude skill that organizes your messy sample library around the way you actually produce — and tells you exactly how much time and storage you got back.**
 
 ---
 
 Producers lose an average of 20–40 minutes per session digging through unorganized samples. That's hours every week not spent making music. This skill fixes your library once, so every session after is faster.
+
+It doesn't just sort by genre. It learns how you work — what DAW you use, what sounds you reach for most, what special folders you need — and builds a structure tailored to you.
+
+---
+
+## What You Can Do With It
+
+| Command | What it does |
+|---------|-------------|
+| `--setup` | Full setup: scans your library, learns your workflow, recommends a structure tailored to you, then executes |
+| `/path/to/folder` | Quick mode: smart defaults, shows you the plan, asks before doing anything |
+| `--new /path` | New downloads: drops a fresh Splice batch into your existing organized library without touching anything else |
+| `--favorites` | Creates a `!Favorites` folder pinned to the top — your go-to sounds, always one click away |
+| `--duplicates /path` | Scans for Splice re-downloads and duplicates, shows how much storage you'd free up, stages for deletion on your approval |
+
+**In Claude Code CLI**, run these as `/organize-samples --setup`, `/organize-samples --favorites`, etc.
+**In Claude Cowork or the desktop app**, just describe what you want in plain English — same result, no slash needed.
 
 ---
 
@@ -28,7 +45,7 @@ Upload the skill directly from the Claude desktop app's skill browser.
 4. Click the skill and follow the prompts
 
 ### 3. Claude Code CLI
-For producers comfortable in the terminal. Gives you full slash command control.
+For producers comfortable in the terminal. Full slash command control.
 
 1. Install [Claude Code](https://claude.ai/code)
 2. Copy the command file into your project:
@@ -37,7 +54,7 @@ mkdir -p .claude/commands
 curl -o .claude/commands/organize-samples.md \
   https://raw.githubusercontent.com/milomaurer23/music-sample-library-organizer/main/.claude/commands/organize-samples.md
 ```
-3. Open Claude Code in that folder and run any command below
+3. Open Claude Code in that folder and run any command above
 
 ---
 
@@ -51,74 +68,45 @@ curl -o .claude/commands/organize-samples.md \
 
 ---
 
-## Commands
-
-```
-/organize-samples --setup              Full setup: scans your library, learns your workflow,
-                                       recommends a custom folder structure, then executes.
-
-/organize-samples /path/to/folder      Quick mode: smart defaults, shows a plan, asks before
-                                       doing anything. Good for a full library you want sorted fast.
-
-/organize-samples --new /path          New downloads mode: drops a fresh Splice batch into your
-                                       existing organized library without touching anything else.
-
-/organize-samples --favorites          Favorites mode: creates a !Favorites folder pinned to the
-                                       top of your library. Tell Claude your go-to sounds —
-                                       it copies them there so they're always one click away.
-
-/organize-samples --duplicates /path   Duplicate scan: finds Splice re-downloads and exact
-                                       duplicates, shows how much storage you'd free up,
-                                       and stages them for deletion on your approval.
-```
-
-*Note: slash commands work in Claude Code CLI. In Cowork or the desktop app, just describe what you want in plain English — same result.*
-
----
-
 ## Before & After
 
+**Before** — everything in one folder, nothing findable mid-session:
 ```
-BEFORE — 1,400 files, one folder, pure chaos:
-samples/
-├── CO_BG_Kick_Punchy_01.wav
-├── kick_final_FINAL_v3.wav
-├── Piano_Am_90bpm_loop.wav
-├── kick_final_FINAL_v3_1.wav       ← Splice duplicate (wasted space)
-├── Snare_Crispy_Hit.wav
-├── loop_house_128bpm.wav
-└── ... (1,394 more)
+samples/  (1,400 files, no structure)
+  kick_final_FINAL_v3.wav
+  kick_final_FINAL_v3_1.wav   ← Splice duplicate, wasting space
+  Piano_Am_90bpm_loop.wav
+  Snare_Crispy_Hit.wav
+  loop_house_128bpm.wav
+  ...
+```
 
-AFTER — clean, browsable, DAW-ready:
+**After** — clean, browsable, built around how you produce:
+```
 samples/Organized-Samples/
-├── !Favorites/                     ← your go-to sounds, always one click away
-├── Trap/
-│   ├── Trap_Kicks/
-│   ├── Trap_Snares/
-│   └── Trap_Drum_Loops/
-├── Lo-Fi/
-│   └── LoFi_Melodic_Loops/
-├── Drums/
-│   ├── Kicks/
-│   ├── Snares/
-│   └── Hi-Hats/
-├── _PROTECTED_PACKS/               ← complete packs kept intact
-├── Duplicates/                     ← flagged for your review
-└── Island_of_Misfit_Toys/          ← unclassifiable, review manually
+  !Favorites/          ← your go-to sounds, always one click away
+  Trap/
+    Trap_Kicks/
+    Trap_Snares/
+    Trap_Drum_Loops/
+  Drums/
+    Kicks/  Snares/  Hi-Hats/
+  Lo-Fi/
+    LoFi_Melodic_Loops/
+  _PROTECTED_PACKS/    ← complete packs kept intact
+  Duplicates/          ← flagged, never auto-deleted
+  Island_of_Misfit_Toys/  ← unclassifiable, review manually
 ```
 
 ---
 
-## What You Get When It's Done
+## What You Walk Away With
 
-```
-✅ 847 files organized
-🗂️  Moved from: 1 chaotic folder → 24 clean folders
-⏱️  Estimated time saved: ~22 minutes per session
-💾  Storage savings available: 2.3 GB in confirmed duplicates (awaiting your approval to delete)
-⚠️  14 files need your review → Island_of_Misfit_Toys/
-🔒  3 complete packs preserved intact → _PROTECTED_PACKS/
-```
+- **A library built around you** — genre-first, instrument-first, or fully custom based on how you answered the setup questions
+- **Your go-to sounds one click away** — `!Favorites` sits at the top of every DAW browser
+- **Storage back** — confirmed duplicates staged and ready to delete, with an exact GB count before you decide
+- **Time back** — estimated minutes saved per session based on files organized and folder depth reduced
+- **Nothing lost** — every file is copied before originals are touched, with a backup manifest saved before anything moves
 
 ---
 
@@ -126,7 +114,7 @@ samples/Organized-Samples/
 
 The skill is a single markdown file: `.claude/commands/organize-samples.md`
 
-Open it to add genre keywords, define custom folders, protect specific packs by prefix, or record misclassification fixes so they don't repeat. The file has an "Iterative Fix Loop" section at the bottom for exactly this.
+Open it to add genre keywords, define custom folders, protect specific packs by prefix, or log misclassification fixes so they don't repeat. The file has an "Iterative Fix Loop" section at the bottom for exactly this.
 
 ---
 
