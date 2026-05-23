@@ -16,27 +16,17 @@ If `$ARGUMENTS` is `--setup` or empty, run Setup Mode.
 
 ## SETUP MODE
 
-Setup Mode learns about you and your library before recommending anything. It has four phases.
+Setup Mode scans the library first, then asks targeted follow-up questions based on what it finds. It has four phases.
 
 ---
 
-### PHASE 1 — Producer Interview
+### PHASE 1 — Opening Question
 
-Ask the user the following questions conversationally (not all at once — ask, wait for answer, continue):
+Ask the user exactly this:
 
-**Q1:** "What kind of producer are you? (e.g. beatmaker, songwriter, film/sync composer, live performer, sound designer — or describe your own)"
+> "What sample folder do you want to organize here today? Please paste the file path to that folder, and if you like, add anything you would like me to know about the kind of samples you are using."
 
-**Q2:** "What genres do you mainly produce in? List as many as apply."
-
-**Q3:** "What DAW do you use?" (This affects folder naming — Ableton users browse differently than Logic or FL users.)
-
-**Q4:** "How do you usually find samples mid-session — do you browse folders, use a plugin browser, search by keyword, or something else?"
-
-**Q5:** "Are there any special folders or categories you already know you want? For example: song stems, breakbeats, vinyl chops, live instrument recordings, Koala sampler packs, vocal chops, construction kits — anything goes."
-
-**Q6:** "Do you have any complete sample packs you want kept together and NOT split up? (e.g. a producer pack, a specific Splice pack, a kit from an artist)"
-
-Take notes on all answers. You will use them to shape your recommendations in Phase 3.
+Take note of the folder path and any context they share. Proceed immediately to Phase 2.
 
 ---
 
@@ -93,11 +83,20 @@ EXISTING FOLDER STRUCTURE:
   [summarize what's already there, if anything]
 ```
 
+After showing the report, ask 2-3 targeted follow-up questions based on what was found. Only ask what's actually relevant — don't ask about genres if the library is clearly all drums, don't ask about packs if none were detected. Examples:
+
+- If multiple genres detected: "I see a lot of [X] and [Y] in here — do you mainly produce those, or is this a mixed library from different sources?"
+- If complete packs detected: "I found what looks like [X] complete pack(s) with consistent file prefixes. Do you want those kept together, or broken up and merged into the main structure?"
+- If no existing structure: "Are there any special folders you know you want — like breakbeats, song stems, vocal chops, or anything specific to how you work?"
+- If DAW-relevant: "What DAW do you use? Ableton, Logic, and FL all have slightly different ways of browsing samples, and I can optimize the folder naming for yours."
+
+Keep it conversational. Two or three questions max. Then move to Phase 3.
+
 ---
 
 ### PHASE 3 — Recommend Organization Strategies
 
-Based on the interview answers and the library report, recommend **2 or 3 organization strategies** tailored to this producer. Present them clearly so the user can compare and pick one.
+Based on the scan report and follow-up answers, recommend **2 or 3 organization strategies** tailored to this producer. Present them clearly so the user can compare and pick one.
 
 **How to choose which strategies to recommend:**
 
