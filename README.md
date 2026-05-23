@@ -70,33 +70,14 @@ curl -o .claude/commands/organize-samples.md \
 
 ## Before & After
 
-**Before** — everything in one folder, nothing findable mid-session:
-```
-samples/  (1,400 files, no structure)
-  kick_final_FINAL_v3.wav
-  kick_final_FINAL_v3_1.wav   ← Splice duplicate, wasting space
-  Piano_Am_90bpm_loop.wav
-  Snare_Crispy_Hit.wav
-  loop_house_128bpm.wav
-  ...
-```
-
-**After** — clean, browsable, built around how you produce:
-```
-samples/Organized-Samples/
-  !Favorites/          ← your go-to sounds, always one click away
-  Trap/
-    Trap_Kicks/
-    Trap_Snares/
-    Trap_Drum_Loops/
-  Drums/
-    Kicks/  Snares/  Hi-Hats/
-  Lo-Fi/
-    LoFi_Melodic_Loops/
-  _PROTECTED_PACKS/    ← complete packs kept intact
-  Duplicates/          ← flagged, never auto-deleted
-  Island_of_Misfit_Toys/  ← unclassifiable, review manually
-```
+| ❌ Before | ✅ After |
+|-----------|---------|
+| 1,400 files dumped in one folder | Clean folders you can actually browse |
+| Loops and one-shots mixed together | Loops and one-shots always separated |
+| Splice duplicates eating your storage | Duplicates flagged — delete with one word |
+| Complete packs broken up and scattered | Full packs preserved intact |
+| Your go-to sounds buried somewhere | `!Favorites/` pinned to the top of your DAW |
+| No idea what’s in there | Report tells you exactly what moved and what was saved |
 
 ---
 
