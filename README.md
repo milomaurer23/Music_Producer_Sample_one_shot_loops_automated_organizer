@@ -4,7 +4,7 @@
 
 ---
 
-Producers lose an average of 20–40 minutes per session digging through unorganized samples. That's hours every week not spent making music. This skill fixes your library once, so every session after is faster.
+Producers lose 20–40 minutes per session just digging through unorganized samples. That’s 2–4 hours a week — hundreds of hours a year — not spent making music. This skill fixes your library once, so every session after is faster.
 
 It doesn't just sort by genre. It learns how you work — what DAW you use, what sounds you reach for most, what special folders you need — and builds a structure tailored to you.
 
@@ -86,7 +86,7 @@ curl -o .claude/commands/organize-samples.md \
 - **A library built around you** — genre-first, instrument-first, or fully custom based on how you answered the setup questions
 - **Your go-to sounds one click away** — `!Favorites` sits at the top of every DAW browser
 - **Storage back** — confirmed duplicates staged and ready to delete, with an exact GB count before you decide
-- **Hours back** — producers lose 20–40 minutes every session digging for sounds; organized once, you get that time back every time you sit down to make music
+- **Hours back every week** — producers lose 20–40 minutes per session just digging for sounds. That’s 2–4 hours a week not spent making music. Organize once, and you get that time back every single session after
 - **Nothing lost** — every file is copied before originals are touched, with a backup manifest saved before anything moves
 
 ---
