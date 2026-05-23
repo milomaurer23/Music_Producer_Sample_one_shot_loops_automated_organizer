@@ -10,16 +10,24 @@ Producers lose an average of 20–40 minutes per session digging through unorgan
 
 ## How to Get It Running
 
-### Recommended — Claude Cowork (no terminal needed)
-The easiest way. Claude Cowork is built into the Claude desktop app and can access your files directly — no command line, no setup beyond granting folder access.
+### 1. Claude Cowork (Recommended)
+The easiest way. Built into the Claude desktop app — no terminal, no setup beyond granting folder access.
 
 1. Open the Claude desktop app and switch to **Cowork** (paid plan required)
 2. Grant it access to your samples folder when prompted
-3. Paste the contents of [`organize-samples.md`](.claude/commands/organize-samples.md) into the chat, or just say:
+3. Paste the contents of [`organize-samples.md`](.claude/commands/organize-samples.md) into the chat, or say:
    > *"I want to organize my sample library. Here are the instructions to follow: [paste file contents]"*
 4. Tell it your samples folder path — it handles the rest
 
-### Advanced — Claude Code CLI
+### 2. Claude Code
+Upload the skill directly from the Claude desktop app's skill browser.
+
+1. Open the Claude desktop app
+2. Go to **Skills → Create Skill → Upload a skill**
+3. Upload the [`organize-samples.md`](.claude/commands/organize-samples.md) file from this repo
+4. Click the skill and follow the prompts
+
+### 3. Claude Code CLI
 For producers comfortable in the terminal. Gives you full slash command control.
 
 1. Install [Claude Code](https://claude.ai/code)
@@ -31,21 +39,15 @@ curl -o .claude/commands/organize-samples.md \
 ```
 3. Open Claude Code in that folder and run any command below
 
-### Also works — Claude Desktop App (guided experience)
-1. Open the Claude desktop app
-2. Go to **Skills → Create Skill → Upload a skill**
-3. Upload the [`organize-samples.md`](.claude/commands/organize-samples.md) file from this repo
-4. Click the skill and follow the prompts
-
 ---
 
 ## Works With
 
-| Tool | Terminal needed | File access | Best for |
-|------|----------------|-------------|----------|
-| **Claude Cowork** ⭐ | No | Direct | Most producers |
-| **Claude Code CLI** | Yes | Direct | Power users |
-| **Claude Desktop App** | No | Guided only | Quick exploration |
+| | Tool | Terminal needed | Best for |
+|-|------|----------------|----------|
+| 1 | **Claude Cowork** ⭐ | No | Most producers |
+| 2 | **Claude Code** | No | Desktop app users |
+| 3 | **Claude Code CLI** | Yes | Power users |
 
 ---
 
