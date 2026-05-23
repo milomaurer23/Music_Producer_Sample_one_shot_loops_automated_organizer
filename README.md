@@ -1,58 +1,79 @@
 # sample-library-organizer
 
-**A Claude Code skill to help you organize disorganized sample libraries and break down your one shots and loops simply.**
+**A Claude Code skill that organizes your messy sample library — and tells you exactly how much time and storage space you got back.**
 
 ---
 
-You open your DAW. You need a punchy kick. You search your samples folder and find 1,400 files named things like `CO_BG_Kick_Punchy_01.wav`, `kick_final_FINAL_v3.wav`, and `loop_???_120bpm_Gm.wav` all dumped in the same folder. You waste 20 minutes digging. You lose the vibe.
+Producers lose an average of 20–40 minutes per session digging through unorganized samples. That's hours every week not spent making music. This skill fixes your library once, so every session after is faster.
 
-**This fixes that.**
+---
+
+## Commands
+
+```
+/organize-samples --setup              Full setup: scans your library, learns your workflow,
+                                       recommends a custom folder structure, then executes.
+
+/organize-samples /path/to/folder      Quick mode: smart defaults, shows a plan, asks before
+                                       doing anything. Good for a full library you want sorted fast.
+
+/organize-samples --new /path          New downloads mode: drops a fresh batch of samples into
+                                       your existing organized library without touching anything else.
+
+/organize-samples --favorites          Favorites mode: creates a !Favorites folder pinned to the
+                                       top of your library. You tell Claude your go-to sounds —
+                                       it copies them there so they're always one click away.
+
+/organize-samples --duplicates /path   Duplicate scan: finds Splice re-downloads and exact
+                                       duplicates, shows you how much storage you'd free up,
+                                       and stages them for deletion on your approval.
+```
 
 ---
 
 ## Before & After
 
 ```
-BEFORE — chaos:
+BEFORE — 1,400 files, one folder, pure chaos:
 samples/
 ├── CO_BG_Kick_Punchy_01.wav
 ├── kick_final_FINAL_v3.wav
 ├── Piano_Am_90bpm_loop.wav
+├── kick_final_FINAL_v3_1.wav       ← Splice duplicate (wasted space)
 ├── Snare_Crispy_Hit.wav
 ├── loop_house_128bpm.wav
-├── darbuka_perc_hit.wav
-└── ... (394 more files, no structure)
+└── ... (1,394 more)
 
-AFTER — clean, searchable, DAW-ready:
+AFTER — clean, browsable, DAW-ready:
 samples/Organized-Samples/
+├── !Favorites/                     ← your go-to sounds, always one click away
 ├── Trap/
 │   ├── Trap_Kicks/
 │   ├── Trap_Snares/
 │   └── Trap_Drum_Loops/
 ├── Lo-Fi/
 │   └── LoFi_Melodic_Loops/
-├── House/
-│   └── House_Drum_Loops/
-├── World Ethnic/
-│   └── WorldEthnic_Percussion/
-├── _PROTECTED_PACKS/     ← complete packs kept intact
-├── Duplicates/           ← flagged for your review, never auto-deleted
-└── Island_of_Misfit_Toys/  ← unclassifiable, review manually
+├── Drums/
+│   ├── Kicks/
+│   ├── Snares/
+│   └── Hi-Hats/
+├── _PROTECTED_PACKS/               ← complete packs kept intact
+├── Duplicates/                     ← flagged for your review
+└── Island_of_Misfit_Toys/          ← unclassifiable, review manually
 ```
 
 ---
 
-## What It Does
+## What You Get When It's Done
 
-- Separates **loops from one-shots** — the most important rule in sample organization
-- Sorts by **genre**, **instrument**, or a **custom structure you define**
-- Analyzes your library first and **recommends an organization strategy** tailored to how you produce
-- Asks about **special folders** you want (breakbeats, song stems, Koala packs, etc.)
-- Keeps **complete sample packs** together instead of splitting them up
-- Detects **Splice re-download duplicates** (`_1.wav`, `_2.wav` artifacts) and stages them for your review
-- **Never deletes anything** without your explicit confirmation
-- Creates a **backup manifest** before touching a single file
-- Generates a **report** when done
+```
+✅ 847 files organized
+🗂️  Moved from: 1 chaotic folder → 24 clean folders
+⏱️  Estimated time saved: ~22 minutes per session
+💾  Storage savings available: 2.3 GB in confirmed duplicates (awaiting your approval to delete)
+⚠️  14 files need your review → Island_of_Misfit_Toys/
+🔒  3 complete packs preserved intact → _PROTECTED_PACKS/
+```
 
 ---
 
@@ -64,7 +85,7 @@ samples/Organized-Samples/
 
 ## Installation
 
-**Option A — Clone the repo and copy the command:**
+**Option A — Clone and copy:**
 ```bash
 git clone https://github.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer.git
 cp -r music_producer_sample_one_shot_loops_automated_organizer/.claude /path/to/your/project/
@@ -77,23 +98,7 @@ curl -o .claude/commands/organize-samples.md \
   https://raw.githubusercontent.com/milomaurer23/music_producer_sample_one_shot_loops_automated_organizer/main/.claude/commands/organize-samples.md
 ```
 
-Then open Claude Code in your project folder.
-
----
-
-## Usage
-
-### Quick — just point it at your folder:
-```
-/organize-samples /Users/yourname/Desktop/Samples
-```
-Scans, shows a plan, asks before doing anything.
-
-### Setup — full customization:
-```
-/organize-samples --setup
-```
-Scans your library, shows you what's in it, asks about your workflow and genres, then recommends an organization structure tailored to you. You can accept, modify, or mix and match before anything gets moved.
+Open Claude Code in your project folder and run any command above.
 
 ---
 
@@ -101,11 +106,7 @@ Scans your library, shows you what's in it, asks about your workflow and genres,
 
 The skill is a single markdown file: `.claude/commands/organize-samples.md`
 
-Open it to:
-- Add genre keywords
-- Define your own folder structure
-- Add protected packs by name or prefix
-- Record misclassification fixes so they don't repeat
+Open it to add genre keywords, define custom folders, protect specific packs by prefix, or record misclassification fixes so they don't repeat. The file has an "Iterative Fix Loop" section at the bottom for exactly this.
 
 ---
 

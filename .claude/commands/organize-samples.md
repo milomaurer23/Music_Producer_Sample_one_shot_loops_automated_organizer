@@ -6,232 +6,240 @@ A Claude Code skill to help you organize disorganized sample libraries and break
 
 ## MODES
 
-- **Quick mode:** `/organize-samples /path/to/samples` — smart defaults, no setup
-- **Setup mode:** `/organize-samples --setup` — full interview + analysis + custom recommendations
+Read `$ARGUMENTS` to determine which mode to run:
 
-If `$ARGUMENTS` is a folder path, run Quick Mode.
-If `$ARGUMENTS` is `--setup` or empty, run Setup Mode.
-
----
-
-## SETUP MODE
-
-Setup Mode scans the library first, then asks targeted follow-up questions based on what it finds. It has four phases.
-
----
-
-### PHASE 1 — Opening Question
-
-Ask the user exactly this:
-
-> "What sample folder do you want to organize here today? Please paste the file path to that folder, and if you like, add anything you would like me to know about the kind of samples you are using."
-
-Take note of the folder path and any context they share. Proceed immediately to Phase 2.
-
----
-
-### PHASE 2 — Deep Library Scan & Report
-
-Ask: "What is the full path to your samples folder?"
-
-Then run a detailed analysis:
-
-```bash
-# Total file count
-find "<folder_path>" -type f \( -iname "*.wav" -o -iname "*.mp3" -o -iname "*.aiff" -o -iname "*.aif" -o -iname "*.flac" \) | wc -l
-
-# List all files for analysis
-find "<folder_path>" -type f \( -iname "*.wav" -o -iname "*.mp3" -o -iname "*.aiff" -o -iname "*.aif" -o -iname "*.flac" \) | sort
-
-# Existing folder structure
-find "<folder_path>" -type d | sort
-```
-
-Analyze the file list and produce a **Library Report**:
-
-```
-📊 YOUR SAMPLE LIBRARY — QUICK REPORT
-======================================
-Total files: X
-
-CONTENT BREAKDOWN (estimated from filenames):
-  Loops:        X files (~X%)
-  One-Shots:    X files (~X%)
-  Unknown:      X files (~X%)
-
-TOP INSTRUMENTS DETECTED:
-  Kicks         ~X files
-  Snares        ~X files
-  Hi-Hats       ~X files
-  808/Bass      ~X files
-  Melodic Loops ~X files
-  Pads/Synths   ~X files
-  Vocals        ~X files
-  Perc/World    ~X files
-  FX/Textures   ~X files
-
-TOP GENRES DETECTED (from filename keywords):
-  [list top 3-5 genres found]
-
-COMPLETE PACKS DETECTED:
-  [list any folder or prefix group with 10+ consistently-named files]
-
-DUPLICATE CANDIDATES:
-  X files with _1 / _2 suffix patterns (likely Splice re-downloads)
-
-EXISTING FOLDER STRUCTURE:
-  [summarize what's already there, if anything]
-```
-
-After showing the report, ask 2-3 targeted follow-up questions based on what was found. Only ask what's actually relevant — don't ask about genres if the library is clearly all drums, don't ask about packs if none were detected. Examples:
-
-- If multiple genres detected: "I see a lot of [X] and [Y] in here — do you mainly produce those, or is this a mixed library from different sources?"
-- If complete packs detected: "I found what looks like [X] complete pack(s) with consistent file prefixes. Do you want those kept together, or broken up and merged into the main structure?"
-- If no existing structure: "Are there any special folders you know you want — like breakbeats, song stems, vocal chops, or anything specific to how you work?"
-- If DAW-relevant: "What DAW do you use? Ableton, Logic, and FL all have slightly different ways of browsing samples, and I can optimize the folder naming for yours."
-
-Keep it conversational. Two or three questions max. Then move to Phase 3.
-
----
-
-### PHASE 3 — Recommend Organization Strategies
-
-Based on the scan report and follow-up answers, recommend **2 or 3 organization strategies** tailored to this producer. Present them clearly so the user can compare and pick one.
-
-**How to choose which strategies to recommend:**
-
-- Heavy drum content + beatmaker → lead with a Drums-focused structure
-- Multiple genres + large library → lead with Genre-first
-- Film/sync composer → lead with Mood/Texture-first or Instrument-first
-- Live performer → lead with Playability-first (quick-access folders)
-- Small library (<200 files) → Instrument-first is simpler and better
-- Large library (500+ files) → Genre-first scales better
-- User mentioned special folders → always include a custom structure option
-
-**Example recommendation format:**
-
-```
-Based on your library, here are 3 ways we could organize this:
-
-──────────────────────────────────────────
-OPTION A — Genre-First (Recommended for you)
-Best for: producers working across multiple genres who want to
-          match the vibe first, then find the right sound.
-
-Trap/
-  Trap_Kicks/         Trap_Snares/
-  Trap_Drum_Loops/    Trap_Melodic_Loops/
-House/
-  House_Kicks/        House_Drum_Loops/
-Lo-Fi/
-  LoFi_Drums/         LoFi_Melodic_Loops/
-Drums/                ← genre-agnostic hits
-FX_and_Foley/
-_PROTECTED_PACKS/
-──────────────────────────────────────────
-OPTION B — Instrument-First (Simpler)
-Best for: producers who search by sound type, not by genre.
-
-One-Shots/
-  Kicks/   Snares/   Hi-Hats/   Claps/
-  808s/    Keys/     Synths/    FX/
-Loops/
-  Drum_Loops/   Melody_Loops/   Bass_Loops/
-_PROTECTED_PACKS/
-──────────────────────────────────────────
-OPTION C — Custom (based on what you told me)
-[Generate this dynamically based on Phase 1 answers.
- Include the special folders the user mentioned.
- e.g. if they said "breakbeats and song stems":
-   Breakbeats/
-   Song_Stems/
-     {Song_Name}/
-   One-Shots/
-   Loops/
-   _PROTECTED_PACKS/
-]
-──────────────────────────────────────────
-
-Which option do you want, or should we mix and match?
-```
-
----
-
-### PHASE 4 — Customize Before Committing
-
-Once the user picks a structure, ask:
-
-**"Want to add, rename, or remove any folders before I finalize the plan? For example:**
-- *Add a 'Breakbeats' folder for chopped drum loops*
-- *Add a 'For Koala' folder for sampler-ready hits*
-- *Rename 'Drums' to 'Drum Kit'*
-- *Add subfolders inside any category*
-- *Anything else?"*
-
-Incorporate their changes, then show the **final structure** one more time for confirmation.
-
-Once confirmed, proceed to EXECUTION (below).
+| Arguments | Mode |
+|-----------|------|
+| `/path/to/folder` | Quick Mode — smart defaults, full library |
+| `--setup` | Setup Mode — interview + analysis + custom structure |
+| `--new /path/to/folder` | New Downloads Mode — merge a fresh batch into existing library |
+| `--favorites` | Favorites Mode — create/update a !Favorites folder |
+| `--duplicates /path/to/folder` | Duplicate Scan — find wasted storage, stage for deletion |
+| (empty) | Ask the user which mode they want |
 
 ---
 
 ## QUICK MODE
 
-When a folder path is given as `$ARGUMENTS`:
-
-1. Scan the folder (same as Phase 2 above)
-2. Print a brief summary: "Found X files. X loops, X one-shots, X unknown."
-3. Use Genre-first as the default structure if 3+ genres are detected, otherwise Instrument-first
-4. Show the proposed plan
-5. Ask: "Proceed? Or run `/organize-samples --setup` to customize first."
-6. On confirmation, proceed to EXECUTION
+1. Ask: "What is the path to your samples folder?"
+2. Scan the folder (see SCANNING section below)
+3. Print a brief report: files found, estimated loops vs one-shots, complete packs detected, duplicates flagged
+4. Show a proposed folder structure using smart defaults (see FOLDER STRUCTURE section)
+5. Ask: "Proceed with this structure? Or run `--setup` to customize first."
+6. On confirmation → EXECUTE
 
 ---
 
-## THE LOOP VS ONE-SHOT RULE ⚠️
+## SETUP MODE
 
-**Loops and One-Shots must NEVER share a folder. This is non-negotiable.**
+Setup Mode scans first, then asks targeted follow-up questions based on what it finds.
 
-### Classify as LOOP if:
+### Phase 1 — Opening Question
+
+Ask exactly this:
+
+> "What sample folder do you want to organize here today? Please paste the file path to that folder, and if you like, add anything you would like me to know about the kind of samples you are using."
+
+Take note of the path and any context. Proceed to Phase 2.
+
+### Phase 2 — Deep Scan & Library Report
+
+Run the full scan (see SCANNING section). Then produce a Library Report:
+
+```
+📊 YOUR SAMPLE LIBRARY
+=======================
+Total files: X
+Estimated size: X GB
+
+CONTENT BREAKDOWN:
+  Loops:     X files (~X%)
+  One-Shots: X files (~X%)
+  Unknown:   X files (~X%)
+
+TOP INSTRUMENTS DETECTED:
+  Kicks / Snares / Hi-Hats / 808s / Melodic Loops / Pads / Vocals / Perc / FX
+
+TOP GENRES DETECTED:
+  [top 3–5 genres from filename keywords]
+
+COMPLETE PACKS DETECTED:
+  [any folder or file group with consistent prefix + 10+ files]
+
+DUPLICATE CANDIDATES:
+  X files / ~X MB (Splice re-download _1/_2 suffix patterns)
+
+EXISTING STRUCTURE:
+  [summarize any folders already present]
+```
+
+### Phase 3 — Targeted Follow-Up Questions
+
+Ask 2–3 questions based on what was found. Only ask what's relevant. Examples:
+
+- Multiple genres detected → "I see a lot of [X] and [Y] — do you mainly produce those, or is this a mixed library?"
+- Complete packs detected → "I found what looks like [X] complete pack(s). Keep them together or merge into the main structure?"
+- No existing structure → "Any special folders you know you want — breakbeats, song stems, vocal chops, anything specific to how you work?"
+- DAW browsing context → "What DAW do you use? I can optimize folder naming for how it browses."
+- Go-to sounds → "Do you have any samples you reach for constantly? I can create a !Favorites folder that puts them one click away."
+
+### Phase 4 — Recommend Structure Options
+
+Present 2–3 organization strategies tailored to what you learned. Format:
+
+```
+Based on your library, here are your options:
+
+──────────────────────────────────────
+OPTION A — Genre-First (Recommended for large, mixed libraries)
+  Trap/Trap_Kicks/  Trap_Drum_Loops/
+  House/House_Kicks/  House_Drum_Loops/
+  Drums/  (genre-agnostic hits)
+  FX_and_Foley/
+──────────────────────────────────────
+OPTION B — Instrument-First (Faster for single-genre producers)
+  One-Shots/Kicks/  One-Shots/Snares/  One-Shots/Hi-Hats/
+  Loops/Drum_Loops/  Loops/Melody_Loops/
+──────────────────────────────────────
+OPTION C — Custom (based on what you told me)
+  [Generated dynamically from follow-up answers.
+   Include any special folders the user requested.]
+──────────────────────────────────────
+Which do you want, or should we mix and match?
+```
+
+### Phase 5 — Customize
+
+Ask: "Anything to add, rename, or remove before I finalize? Any extra folders, special categories, or sounds you want handled differently?"
+
+Incorporate changes. Show the final structure one more time. Get confirmation → EXECUTE.
+
+---
+
+## NEW DOWNLOADS MODE (`--new /path`)
+
+For dropping a fresh batch of samples into an already-organized library without disturbing the existing structure.
+
+1. Ask: "Where is your existing organized library?" (skip if already known)
+2. Scan the new folder
+3. Classify each file (see CLASSIFICATION section)
+4. Map each file to its destination in the existing library
+5. Show a proposed move list
+6. On confirmation → copy files to destination → report
+
+Do NOT reorganize the existing library. Only add to it.
+
+---
+
+## FAVORITES MODE (`--favorites`)
+
+Helps the user create a `!Favorites` folder pinned to the top of their library (the `!` prefix sorts it above all other folders in every DAW and file browser).
+
+1. Ask: "What is the path to your sample library?"
+2. Ask: "Tell me your go-to sounds — you can describe them ('my punchy 808 kick'), paste filenames, or point me to a folder of your most-used samples."
+3. Locate those files in the library
+4. Copy (never move) them into `!Favorites/` at the root of the library
+5. Optionally create subfolders inside `!Favorites/` if the user has go-tos across multiple categories (e.g. `!Favorites/Kicks/`, `!Favorites/Loops/`)
+6. Report: "X files added to !Favorites. They're still in their original locations too — this is a copy."
+
+On future runs, ask: "Your !Favorites folder has X files. Want to add more, remove any, or leave it as-is?"
+
+---
+
+## DUPLICATE SCAN MODE (`--duplicates /path`)
+
+1. Scan for duplicate candidates:
+   - Files ending in `_1.wav`, `_1_1.wav`, `_2.wav` (Splice re-download artifacts)
+   - Files with identical names in different folders
+   - (Optional, if user agrees) Files with identical file sizes
+2. For each candidate, check: does the base file (without `_1`/`_2` suffix) exist elsewhere?
+   - If yes → confirmed duplicate
+   - If no → flag as unconfirmed, do not stage for deletion
+3. Calculate total storage wasted
+4. Report:
+
+```
+🔍 DUPLICATE SCAN RESULTS
+==========================
+Confirmed duplicates: X files = X.X GB
+Unconfirmed (needs review): X files
+
+CONFIRMED DUPLICATES (safe to delete):
+  kick_punchy_01_1.wav  →  duplicate of  kick_punchy_01.wav  (2.1 MB)
+  [...]
+
+To delete all confirmed duplicates, say: "delete confirmed duplicates"
+To review individually, say: "show me each one"
+```
+
+**Never delete without explicit user confirmation.**
+
+---
+
+## SCANNING
+
+Run these commands for any scan:
+
+```bash
+# All audio files
+find "<folder_path>" -type f \( -iname "*.wav" -o -iname "*.mp3" -o -iname "*.aiff" -o -iname "*.aif" -o -iname "*.flac" -o -iname "*.ogg" \) | sort
+
+# Folder structure
+find "<folder_path>" -type d | sort
+
+# Total size
+du -sh "<folder_path>"
+```
+
+---
+
+## CLASSIFICATION
+
+### Loop vs One-Shot — The Most Important Rule
+**Loops and One-Shots must NEVER share a folder.**
+
+**Classify as LOOP if:**
 - Filename contains: `loop`, `groove`, `phrase`, `pattern`, `cycle`, `fill`, `top_loop`, `lp`
-- Filename contains a BPM value: `120bpm`, `128_bpm`, `90BPM`, `_120_`
+- Filename contains a BPM value: `120bpm`, `128_bpm`, `_120_`
 - Filename contains a musical key: `Am`, `Cmaj`, `F#`, `_Bb_`
-- Shakers, maracas, hi-hat patterns with BPM → LOOP (rhythmic, not a hit)
+- Shakers, hi-hat patterns, or maracas with BPM → always LOOP
 
-### Classify as ONE-SHOT if:
+**Classify as ONE-SHOT if:**
 - Filename contains: `one_shot`, `oneshot`, `hit`, `shot`, `single`, `staccato`
 - Single drum element without BPM or loop context: `kick`, `snare`, `hat`, `clap`
 
-### Edge Cases:
+**Edge cases:**
 - Both indicators present (e.g. `Kick_Loop_120.wav`) → **LOOP wins**
-- File is in an "One-Shots" folder but has BPM in the name → reclassify as LOOP
-- Truly ambiguous → `Island_of_Misfit_Toys/`, flag for user review
+- File in a "One-Shots" folder with BPM in the name → reclassify as LOOP
+- Truly ambiguous → `Island_of_Misfit_Toys/`, list for user review
 
----
+### Instrument Detection
 
-## INSTRUMENT DETECTION (from filename keywords)
+| Category | Keywords |
+|----------|----------|
+| Kick | kick, kik, bd, bassdrum |
+| Snare | snare, snr, sd, rimshot |
+| Hi-Hat | hat, hh, hihat, ohh, chh |
+| Clap | clap, clp, handclap |
+| Perc | perc, shaker, tamb, conga, bongo, tom |
+| Cymbal | cymbal, crash, ride, splash |
+| Bass | bass, sub, 808, low |
+| Keys | keys, piano, rhodes, organ, ep, wurli |
+| Synth | synth, lead, pad, pluck, arp, chord, stab |
+| FX | fx, riser, sweep, impact, whoosh, texture, atmo, foley |
+| Vocal | vox, vocal, voice, chant, choir, adlib, hook |
+| Breakbeat | break, breakbeat, amen, break_loop |
 
-**Drum One-Shots:** kick/kik/bd, snare/snr/sd, hat/hh/hihat, clap/clp, perc/shaker/conga/tom, cymbal/crash/ride
+### Genre Detection
 
-**Melodic One-Shots:** bass/sub/808, keys/piano/rhodes/organ, synth/lead/pad/pluck/arp/chord, fx/riser/impact/whoosh/texture
-
-**Vocals:** vox/vocal/voice/chant/choir/adlib/hook
-
-**Loops:** drum_loop, melody_loop, bass_loop, perc_loop, top_loop, groove
-
-**Special:** breakbeat/break/amen → `Breakbeats/` (if user wants this folder)
-
----
-
-## GENRE DETECTION (from filename keywords)
-
-| Keywords | Genre Folder |
-|----------|-------------|
+| Keywords in filename | Genre Folder |
+|---------------------|-------------|
 | trap, drill | Trap |
 | house, deep house, tech house | House |
 | rnb, r&b, soul | RnB |
 | hiphop, hip_hop, boom, bap | Hip-Hop |
 | disco, funk | Disco |
-| latin, salsa, bossa, samba, conga | Latin |
+| latin, salsa, bossa, samba, conga, bongo | Latin |
 | reggae, dancehall, afro | Afro & Reggae |
 | pop | Pop |
 | edm, electro, club | EDM |
@@ -239,82 +247,86 @@ When a folder path is given as `$ARGUMENTS`:
 | jazz | Jazz |
 | lofi, lo-fi, chill | Lo-Fi |
 | country, nashville | Country |
-| world, ethnic, darbuka, riq, shamisen | World Ethnic |
+| world, ethnic, darbuka, riq, shamisen, nyabinghi | World Ethnic |
 | vintage, retro, vinyl | Vintage & Retro |
 | dnb, jungle, drum and bass | Jungle & DnB |
 
-Note: Darbuka and riq → World Ethnic, NOT Latin.
+Note: Darbuka, riq → World Ethnic. NOT Latin.
 
 ---
 
-## COMPLETE PACK DETECTION
+## FOLDER STRUCTURE PRINCIPLES
 
-A file group qualifies as a complete pack if:
-- It has its own subfolder with a consistent naming prefix (e.g. all files start with `KSHMR_`, `OLIVER_`, `ATP_`)
-- It was named by the user in Phase 1
-- It contains 10+ files sharing the same prefix
+### Avoid Redundancy — No Folder Bloat
+The goal is a structure where every folder level adds meaningful navigation value. A folder that exists just to hold one other folder is waste.
 
-**Action:** Move the entire pack folder intact to `_PROTECTED_PACKS/`. Do not split it up.
-
----
-
-## DUPLICATE DETECTION
-
-Files ending in `_1.wav`, `_1_1.wav`, or `_2.wav` are likely Splice re-download duplicates.
-Check: does the base filename (without suffix) exist elsewhere?
-- If yes → confirmed duplicate → stage in `Duplicates/`
-- Never delete without explicit user confirmation
-
----
-
-## FOLDER NAMING RULES
-
+- ✅ `Drums/Kicks/` — two levels, both useful
+- ❌ `Drums/Drum_Elements/Drum_Hits/Kicks/` — three levels of bloat to get to the same place
 - Sub-folders must NOT repeat the parent name as a prefix
-  - ✅ `Drums/Kicks` — correct
-  - ❌ `Drums/Drum_Kicks` — wrong
-- Exception: genre subfolders DO use the genre as a prefix
-  - ✅ `Latin/Latin_Kicks/`, `Trap/Trap_Drum_Loops/`
-- Preserve original filenames — they contain BPM, key, and pack info
+  - ✅ `Drums/Kicks`
+  - ❌ `Drums/Drum_Kicks`
+- Exception: genre subfolders use the genre as prefix → `Trap/Trap_Kicks/` ✅
+
+### Folder Sorting with Prefixes
+Use prefix characters to pin important folders to the top in DAW browsers:
+- `!Favorites/` — always first
+- `_PROTECTED_PACKS/` — underscore pushes to top or bottom depending on DAW
+- `Island_of_Misfit_Toys/` — naturally sorts late alphabetically
+
+### Complete Pack Detection
+A file group is a complete pack if it has a consistent filename prefix across 10+ files (e.g. all start with `KSHMR_`, `OLIVER_`, `ATP_`), or the user named it. Move the whole folder to `_PROTECTED_PACKS/` — do not split it up.
 
 ---
 
 ## EXECUTION
 
-1. Create backup manifest first:
+1. **Backup manifest first:**
 ```bash
 find "<folder_path>" -type f \( -iname "*.wav" -o -iname "*.aiff" -o -iname "*.mp3" \) \
   -exec stat --format='{"file":"%n","size":%s}' {} \; \
   > "<folder_path>/_ORGANIZATION_REPORTS/backup_manifest_$(date +%Y%m%d_%H%M%S).json"
 ```
 
-2. Use `cp` (copy) — **never `mv`** — to place files in new locations
+2. Use `cp` — **never `mv`** — to place files in new locations
 3. Show progress every 25 files
-4. After copies complete, verify counts
+4. After copies complete, verify counts match
 5. Ask: "All X files copied. Want me to remove the originals? (yes / no)"
 6. Only run `rm` after explicit confirmation
 7. Clean up empty folders: `find "<folder_path>" -type d -empty -delete`
 
 ---
 
-## REPORT
+## COMPLETION REPORT
 
-Save to `_ORGANIZATION_REPORTS/report_{timestamp}.md` and print:
+After every run, print a report and save it to `_ORGANIZATION_REPORTS/report_{timestamp}.md`:
 
 ```
 ✅ X files organized
-📁 Structure used: [Genre-first / Instrument-first / Custom]
-🔒 X complete packs preserved in _PROTECTED_PACKS/
+🗂️  Moved from X folders → Y clean folders
+⏱️  Estimated time saved: ~Z minutes per session*
+💾  Storage savings available: X.X GB in confirmed duplicates (say "delete confirmed duplicates" to free it up)
 ⚠️  X files in Island_of_Misfit_Toys — needs your review
-🗑️  X duplicates in Duplicates/ — say "delete confirmed duplicates" to remove them
+🔒  X complete packs preserved in _PROTECTED_PACKS/
+📁  Full report saved to: _ORGANIZATION_REPORTS/report_{timestamp}.md
+
+*Based on average of 20–30 minutes lost per session digging through unorganized samples,
+ scaled by the number of files organized and folders simplified.
 ```
+
+**How to estimate time saved:**
+- Baseline: producers lose ~25 minutes/session average searching disorganized libraries
+- For every 100 files organized into clean folders: ~3 minutes/session recovered
+- For every redundant folder level removed: ~1 minute/session recovered
+- For duplicates removed: factor in reduced cognitive load and faster auditioning
+- Round to nearest 5 minutes. Show as a range if uncertain (e.g. "~15–25 minutes per session")
 
 ---
 
 ## ITERATIVE FIX LOOP
 
-If a file gets misclassified: fix it, then add a new rule to this file so it doesn't happen again.
+If a file gets misclassified: fix it, then add a new rule here so it doesn't repeat.
 
-Example additions:
+Example entries:
 - "Nyabinghi → World Ethnic (not Reggae)"
-- "Files with prefix `XYZ_` belong to protected pack XYZ"
+- "Files with prefix `XYZ_` = protected pack XYZ, move to _PROTECTED_PACKS/"
 - "My 'Breaks' folder = breakbeats, not general loops"
