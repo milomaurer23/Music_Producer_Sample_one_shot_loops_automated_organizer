@@ -10,23 +10,23 @@ Read `$ARGUMENTS` to determine which mode to run:
 
 | Arguments | Mode |
 |-----------|------|
-| `/path/to/folder` | Quick Mode — smart defaults, full library |
-| `--setup` | Setup Mode — interview + analysis + custom structure |
-| `--new /path/to/folder` | New Downloads Mode — merge a fresh batch into existing library |
-| `--favorites` | Favorites Mode — create/update a !Favorites folder |
-| `--duplicates /path/to/folder` | Duplicate Scan — find wasted storage, stage for deletion |
+| `--setup` | Setup Mode — interview + deep scan + custom structure |
+| `--quick /path` | Quick Mode — smart defaults, no questions |
+| `--add /path` | Add Mode — drop new downloads into existing library |
+| `--curate` | Curate Mode — builds a personalized sample pack from your own library |
 | (empty) | Ask the user which mode they want |
+
+Duplicate detection runs automatically in every mode and is always included in the final report.
 
 ---
 
-## QUICK MODE
+## QUICK MODE (`--quick /path`)
 
-1. Ask: "What is the path to your samples folder?"
-2. Scan the folder (see SCANNING section below)
-3. Print a brief report: files found, estimated loops vs one-shots, complete packs detected, duplicates flagged
-4. Show a proposed folder structure using smart defaults (see FOLDER STRUCTURE section)
-5. Ask: "Proceed with this structure? Or run `--setup` to customize first."
-6. On confirmation → EXECUTE
+1. Scan the folder at the given path (see SCANNING section)
+2. Print a brief report: files found, loops vs one-shots, complete packs detected, duplicate candidates flagged
+3. Show a proposed folder structure using smart defaults — genre-first if 3+ genres detected, instrument-first otherwise
+4. Ask: "Proceed with this structure? Or run `--setup` to customize first."
+5. On confirmation → EXECUTE → COMPLETION REPORT (including duplicates found)
 
 ---
 
@@ -116,7 +116,7 @@ Incorporate changes. Show the final structure one more time. Get confirmation �
 
 ---
 
-## NEW DOWNLOADS MODE (`--new /path`)
+## ADD MODE (`--add /path`)
 
 For dropping a fresh batch of samples into an already-organized library without disturbing the existing structure.
 
@@ -125,54 +125,71 @@ For dropping a fresh batch of samples into an already-organized library without 
 3. Classify each file (see CLASSIFICATION section)
 4. Map each file to its destination in the existing library
 5. Show a proposed move list
-6. On confirmation → copy files to destination → report
+6. On confirmation → copy files to destination → COMPLETION REPORT (including duplicates found)
 
 Do NOT reorganize the existing library. Only add to it.
 
 ---
 
-## FAVORITES MODE (`--favorites`)
+## CURATE MODE (`--curate`)
 
-Helps the user create a `!Favorites` folder pinned to the top of their library (the `!` prefix sorts it above all other folders in every DAW and file browser).
+Builds a personalized sample pack curated from sounds already in the user's library — based on their taste, not just folder structure. This is discovery, not organization. Like a "Made For You" playlist, but from sounds they already own.
 
-1. Ask: "What is the path to your sample library?"
-2. Ask: "Tell me your go-to sounds — you can describe them ('my punchy 808 kick'), paste filenames, or point me to a folder of your most-used samples."
-3. Locate those files in the library
-4. Copy (never move) them into `!Favorites/` at the root of the library
-5. Optionally create subfolders inside `!Favorites/` if the user has go-tos across multiple categories (e.g. `!Favorites/Kicks/`, `!Favorites/Loops/`)
-6. Report: "X files added to !Favorites. They're still in their original locations too — this is a copy."
+### Phase 1 — Learn Their Taste
 
-On future runs, ask: "Your !Favorites folder has X files. Want to add more, remove any, or leave it as-is?"
+Ask these questions conversationally, one at a time:
 
----
+1. "What genres do you produce most? List as many as you want."
+2. "What type of sounds do you love working with most? For example: drum machines, organic textures, melodic loops, 808s, vintage samples, vocal chops — or describe your own."
+3. "Name a few samples you always reach for — describe them in your own words or paste the filenames if you know them. Don't worry if you can't remember exactly."
 
-## DUPLICATE SCAN MODE (`--duplicates /path`)
+Take detailed notes. These answers are the taste profile you'll match against.
 
-1. Scan for duplicate candidates:
-   - Files ending in `_1.wav`, `_1_1.wav`, `_2.wav` (Splice re-download artifacts)
-   - Files with identical names in different folders
-   - (Optional, if user agrees) Files with identical file sizes
-2. For each candidate, check: does the base file (without `_1`/`_2` suffix) exist elsewhere?
-   - If yes → confirmed duplicate
-   - If no → flag as unconfirmed, do not stage for deletion
-3. Calculate total storage wasted
+### Phase 2 — Scan & Match
+
+Scan the library (see SCANNING section). Then find sounds that match the taste profile:
+
+- Match genre keywords from their answers against filenames
+- Match instrument/sound type keywords against filenames
+- For named or described samples, locate those files and find similar ones (same prefix, same instrument type, same genre folder)
+- Prioritize sounds that would work together in a session — cohesion matters more than quantity
+- Aim for 30–60 sounds total. Better to curate tightly than dump everything that partially matches.
+
+### Phase 3 — Name the Pack
+
+Based on what you found and what they told you, give the pack a name that reflects their taste. Examples:
+- `!My Pack — Dark Trap Drums/`
+- `!My Pack — Vintage Drum Machines/`
+- `!My Pack — Lo-Fi Textures/`
+- `!My Pack — 808s & Bass/`
+
+Ask the user: "I'm going to build you a [name] pack with [X] sounds. Does that name feel right, or want to call it something else?"
+
+### Phase 4 — Build & Report
+
+1. Copy (never move) matched files into the named pack folder at the root of the library
+2. The `!` prefix ensures it sorts to the top of every DAW browser and file explorer automatically
+3. Organize inside the pack folder by type if there are multiple categories (e.g. `Kicks/`, `Loops/`, `Textures/`)
 4. Report:
 
 ```
-🔍 DUPLICATE SCAN RESULTS
-==========================
-Confirmed duplicates: X files = X.X GB
-Unconfirmed (needs review): X files
+🎛️ YOUR CURATED PACK IS READY
+================================
+Pack name: !My Pack — Dark Trap Drums
+Location: /path/to/library/!My Pack — Dark Trap Drums/
+Sounds included: 47 files
 
-CONFIRMED DUPLICATES (safe to delete):
-  kick_punchy_01_1.wav  →  duplicate of  kick_punchy_01.wav  (2.1 MB)
-  [...]
+  Kicks/          12 sounds
+  Snares/          9 sounds
+  Hi-Hats/         8 sounds
+  808s & Bass/    11 sounds
+  Perc/            7 sounds
 
-To delete all confirmed duplicates, say: "delete confirmed duplicates"
-To review individually, say: "show me each one"
+All originals are untouched in their original locations.
+This is your personal starting point — open it in your DAW and explore.
 ```
 
-**Never delete without explicit user confirmation.**
+On future runs, ask: "You already have a curated pack ([name], X sounds). Want to rebuild it, add to it, or create a new one with a different vibe?"
 
 ---
 
@@ -269,7 +286,7 @@ The goal is a structure where every folder level adds meaningful navigation valu
 
 ### Folder Sorting with Prefixes
 Use prefix characters to pin important folders to the top in DAW browsers:
-- `!Favorites/` — always first
+- `!My Pack — [Name]/` — curated packs sort first (! beats all letters)
 - `_PROTECTED_PACKS/` — underscore pushes to top or bottom depending on DAW
 - `Island_of_Misfit_Toys/` — naturally sorts late alphabetically
 
@@ -298,13 +315,19 @@ find "<folder_path>" -type f \( -iname "*.wav" -o -iname "*.aiff" -o -iname "*.m
 
 ## COMPLETION REPORT
 
-After every run, print a report and save it to `_ORGANIZATION_REPORTS/report_{timestamp}.md`:
+After every run (all modes), automatically scan for duplicates and print a full report. Save to `_ORGANIZATION_REPORTS/report_{timestamp}.md`:
 
 ```
 ✅ X files organized
 🗂️  Moved from X folders → Y clean folders
 ⏱️  Estimated time saved: ~Z minutes per session*
-💾  Storage savings available: X.X GB in confirmed duplicates (say "delete confirmed duplicates" to free it up)
+
+💾  DUPLICATES FOUND: X files = X.X GB wasted
+    Confirmed (safe to delete):   X files = X.X GB
+    Unconfirmed (needs review):   X files
+    → Say "delete confirmed duplicates" to free up the space
+    → Say "show me each one" to review individually
+
 ⚠️  X files in Island_of_Misfit_Toys — needs your review
 🔒  X complete packs preserved in _PROTECTED_PACKS/
 📁  Full report saved to: _ORGANIZATION_REPORTS/report_{timestamp}.md
@@ -319,6 +342,14 @@ After every run, print a report and save it to `_ORGANIZATION_REPORTS/report_{ti
 - For every redundant folder level removed: ~1 minute/session recovered
 - For duplicates removed: factor in reduced cognitive load and faster auditioning
 - Round to nearest 5 minutes. Show as a range if uncertain (e.g. "~15–25 minutes per session")
+
+**Duplicate detection logic (runs in every mode):**
+- Flag files ending in `_1.wav`, `_1_1.wav`, `_2.wav` (Splice re-download artifacts)
+- Flag files with identical names in different folders
+- For each candidate: check if the base filename (without suffix) exists elsewhere
+  - If yes → confirmed duplicate
+  - If no → unconfirmed, flag for review only
+- Never delete without explicit user confirmation
 
 ---
 
